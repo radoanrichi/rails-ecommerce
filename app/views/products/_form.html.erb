@@ -1,8 +1,7 @@
 <%= form_with(model: @product, local: true, html: { multipart: true }) do |form| %>
   <% if @product.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
-
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h4>
       <ul>
         <% @product.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -10,43 +9,55 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="form-group">
+    <%= form.label :name, class: 'form-label' %>
+    <%= form.text_field :name, class: 'form-control' %>
   </div>
-
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
+  <div class="form-group">
+    <%= form.label :description, class: 'form-label' %>
+    <%= form.text_area :description, class: 'form-control', rows: 4 %>
   </div>
-
-  <div class="field">
-    <%= form.label :price %>
-    <%= form.number_field :price %>
+  <div class="form-group">
+    <%= form.label :price, class: 'form-label' %>
+    <%= form.number_field :price, class: 'form-control' %>
   </div>
-
-  <div class="field">
-    <%= form.label :stock_quantity %>
-    <%= form.number_field :stock_quantity %>
+  <div class="form-group">
+    <%= form.label :stock_quantity, class: 'form-label' %>
+    <%= form.number_field :stock_quantity, class: 'form-control' %>
   </div>
-
-  <div class="field">
-    <%= form.label :SKU %>
-    <%= form.text_field :SKU %>
+  <div class="form-group">
+    <%= form.label :SKU, class: 'form-label' %>
+    <%= form.text_field :SKU, class: 'form-control' %>
   </div>
-
-  <div class="field">
-    <%= form.label :images %>
-    <%= form.file_field :images, multiple: true %>
+  <div class="form-group">
+    <%= form.label :images, class: 'form-label' %>
+    <%= form.file_field :images, multiple: true, class: 'form-control-file' %>
   </div>
-
-  <div class="field">
-    <%= form.label :categories %>
-    <%= form.collection_check_boxes :category_ids, Category.all, :id, :name, {}, multiple: true %>
+  <% if @product.images.attached? %>
+    <div class="form-group">
+      <h3>Current Images</h3>
+      <div class="d-flex flex-wrap">
+        <% @product.images.each do |image| %>
+          <div class="image-thumbnail mb-2 mr-2">
+            <%= image_tag image, size: "100x100", class: 'img-thumbnail' %>
+            <%= link_to "Remove", product_delete_image_path(@product, image), method: :delete, class: "btn btn-danger btn-sm mt-1" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <%= form.label :category_ids, 'Categories', class: 'form-label' %>
+    <div class="form-check">
+      <%= form.collection_check_boxes :category_ids, Category.all, :id, :name, class: 'form-check-input' do |b| %>
+        <div class="form-check">
+          <%= b.check_box(class: 'form-check-input') %>
+          <%= b.label(class: 'form-check-label') %>
+        </div>
+      <% end %>
+    </div>
   </div>
-
-  <div class="actions">
-    <%= form.submit %>
+  <div class="form-group">
+    <%= form.submit 'Save Product', class: 'btn btn-primary' %>
   </div>
 <% end %>

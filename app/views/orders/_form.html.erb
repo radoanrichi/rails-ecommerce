@@ -1,7 +1,7 @@
 <%= form_with(model: order, local: true) do |form| %>
   <% if order.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+    <div id="error_explanation" class="alert alert-danger">
+      <h4><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h4>
       <ul>
         <% order.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -9,15 +9,15 @@
       </ul>
     </div>
   <% end %>
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.select :status, Order.statuses.keys.map { |status| [status.humanize, status] } %>
+  <div class="form-group">
+    <%= form.label :status, class: 'form-label' %>
+    <%= form.select :status, Order.statuses.keys.map { |status| [status.humanize, status] }, {}, class: 'form-control' %>
   </div>
-  <div class="field">
-    <%= form.label :shipping_status %>
-    <%= form.select :shipping_status, Order.shipping_statuses.keys.map { |status| [status.humanize, status] } %>
+  <div class="form-group">
+    <%= form.label :shipping_status, class: 'form-label' %>
+    <%= form.select :shipping_status, Order.shipping_statuses.keys.map { |status| [status.humanize, status] }, {}, class: 'form-control' %>
   </div>
-  <div class="actions">
-    <%= form.submit 'Update Order' %>
+  <div class="form-group">
+    <%= form.submit 'Update Order', class: 'btn btn-primary' %>
   </div>
 <% end %>

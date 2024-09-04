@@ -1,8 +1,0 @@
-<h1>Make Payment</h1>
-<%= form_with(model: [@order, @payment], url: order_payment_path(@order), method: :post) do |form| %>
-  <div class="form-group">
-    <%= form.label :payment_method, 'Choose Payment Method' %>
-    <%= form.select :payment_method, Payment.payment_methods.keys.map { |method| [method.humanize, method] }, {}, class: 'form-control' %>
-  </div>
-  <%= form.submit 'Submit Payment', class: 'btn btn-primary' %>
-<% end %>

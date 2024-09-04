@@ -1,4 +1,13 @@
-<h1>Order Confirmation Email</h1>
-<div>
-  <%= @email_content %>
+<h1 class="mb-4">Order Confirmation Email</h1>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="card-title">Email Content</h4>
+    </div>
+    <div class="card-body">
+      <div class="email-content">
+        <%= @email_content.html_safe %>
+      </div>
+    </div>
+  </div>
 </div>

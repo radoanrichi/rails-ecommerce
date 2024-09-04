@@ -1,16 +1,39 @@
-<h1><%= @category.name %></h1>
-
-<p>
-  <strong>Description:</strong>
-  <%= @category.description %>
-</p>
-
-<h3>Products:</h3>
-<ul>
-  <% @category.products.each do |product| %>
-    <li><%= link_to product.name, product %></li>
-  <% end %>
-</ul>
-
-<%= link_to 'Edit', edit_category_path(@category) %> |
-<%= link_to 'Back', categories_path %>
+<div class="container mt-4">
+  <h1><%= @category.name %></h1>
+  <div class="mb-3">
+    <p>
+      <strong>Description:</strong>
+      <%= @category.description %>
+    </p>
+  </div>
+  <h3>Products:</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Other Categories</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @category.products.each do |product| %>
+        <tr>
+          <td><%= link_to product.name, product %></td>
+          <td>
+            <% other_categories = product.categories.where.not(id: @category.id) %>
+            <% if other_categories.any? %>
+              <%= other_categories.map(&:name).join(', ') %>
+            <% else %>
+              None
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="mt-3">
+    <% if current_user && current_user.admin? %>
+      <%= link_to 'Edit this category', edit_category_path(@category), class: 'btn btn-warning btn-sm' %>
+    <% end %>
+    <%= link_to 'Back', categories_path, class: 'btn btn-secondary btn-sm' %>
+  </div>
+</div>

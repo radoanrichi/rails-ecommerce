@@ -1,0 +1,98 @@
+/* Navbar styling */
+.navbar {
+  margin-bottom: 30px;
+  padding-left: 1rem;  /* Add padding on left side */
+  padding-right: 1rem; /* Add padding on right side */
+}
+
+/* Jumbotron styling */
+.jumbotron {
+  background-color: #f8f9fa;
+  padding: 2rem 1rem;
+  border-radius: 0.3rem;
+}
+
+/* Navbar links */
+.nav-link {
+  color: #007bff !important;
+}
+
+.nav-link:hover {
+  color: #0056b3 !important;
+}
+
+/* Card styling */
+.card {
+  border: 1px solid #e3e6f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.card-text {
+  font-size: 0.9rem;
+}
+
+.card-footer {
+  background-color: #f8f9fa;
+}
+
+/* Custom form styles */
+.form-horizontal .form-group {
+  margin-bottom: 1rem;
+}
+
+.alert-danger {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+/* Carousel styling */
+.carousel-control-prev,
+.carousel-control-next {
+  filter: invert(50%) grayscale(100%); /* Light gray arrows */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.carousel-indicators li {
+  background-color: rgba(0, 0, 0, 0.5); /* Darker indicator dots */
+}
+
+.carousel-indicators .active {
+  background-color: rgba(0, 0, 0, 0.8); /* Darker active dot */
+}
+
+      /* Flexbox layout to ensure footer stays at the bottom */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex: 1; /* Take up remaining space */
+}
+footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.extra-bold-heading {
+  font-weight: 900; /* or any value between 700 and 900 */
+}
+
+.star {
+  font-size: 1.2em; /* Adjust size as needed */
+  margin-right: 2px; /* Space between stars */
+}
