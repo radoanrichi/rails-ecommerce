@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!
+  load_and_authorize_resource
   before_action :set_user, only: %i[show edit update destroy]
 
   def index
@@ -6,35 +8,26 @@ class UsersController < ApplicationController
   end
 
   def show
-  end
-
-  def new
-    @user = User.new
+    redirect_to edit_user_path if current_user != @user && !current_user.admin?
   end
 
   def edit
   end
 
-  def create
-    @user = User.new(user_params)
-    if @user.save
-      redirect_to @user, notice: I18n.t('users.create.success')
-    else
-      render :new
-    end
-  end
-
   def update
     if @user.update(user_params)
-      redirect_to @user, notice: I18n.t('users.update.success')
+      redirect_to user_path(@user), notice: I18n.t('users.update.success')
     else
-      render :edit
+      render :edit, alert: I18n.t('users.update.failed')
     end
   end
 
   def destroy
-    @user.destroy
-    redirect_to users_url, notice: I18n.t('users.destroy.success')
+    if @user.destroy
+      redirect_to users_path, notice: I18n.t('users.destroy.success')
+    else
+      redirect_to users_path, alert: I18n.t('users.destroy.failed')
+    end
   end
 
   private
@@ -44,6 +37,10 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :address, :phone, :role)
+    params.require(:user).permit(:role)
+  end
+
+  def authorize_admin
+    redirect_to root_path, alert: I18n.t('users.access_denied') unless current_user&.admin?
   end
 end

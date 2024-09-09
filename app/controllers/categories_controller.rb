@@ -1,4 +1,5 @@
 class CategoriesController < ApplicationController
+  load_and_authorize_resource except: %i[index show]
   before_action :set_category, only: %i[show edit update destroy]
 
   def index
@@ -6,7 +7,6 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @id = 4545
   end
 
   def new

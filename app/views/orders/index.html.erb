@@ -1,31 +1,33 @@
 <h1>Orders</h1>
-
-<%= link_to 'New Order', new_order_path %>
-
+<% if current_user.admin? %>
+  <h2>All Orders</h2>
+<% else %>
+  <h2>Your Orders</h2>
+<% end %>
 <table>
   <thead>
     <tr>
-      <th>Order Date</th>
+      <th>Order ID</th>
+      <th>User</th>
       <th>Total Amount</th>
       <th>Status</th>
-      <th>Shipping Address</th>
-      <th>Shipping Status</th>
-      <th></th>
-      <th></th>
+      <th>Actions</th>
     </tr>
   </thead>
-
   <tbody>
     <% @orders.each do |order| %>
       <tr>
-        <td><%= order.order_date %></td>
-        <td><%= order.total_amount %></td>
-        <td><%= order.status %></td>
-        <td><%= order.shipping_address %></td>
-        <td><%= order.shipping_status %></td>
-        <td><%= link_to 'Show', order_path(order) %></td>
-        <td><%= link_to 'Edit', edit_order_path(order) %></td>
-        <td><%= link_to 'Destroy', order_path(order), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= order.id %></td>
+        <td><%= order.user.name %></td>
+        <td><%= number_to_currency(order.total_amount) %></td>
+        <td><%= order.status.humanize %></td>
+        <td>
+          <%= link_to 'View', order_path(order) %>
+          <% if current_user.admin? %>
+            <%= link_to 'Edit', edit_order_path(order) %>
+            <%= button_to 'Delete', order_path(order), method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

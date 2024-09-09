@@ -1,50 +1,47 @@
 class PaymentsController < ApplicationController
-  before_action :set_payment, only: %i[show edit update destroy]
-
-  def index
-    @payments = Payment.all
-  end
-
-  def show
-  end
-
-  def new
-    @payment = Payment.new
-  end
+  load_and_authorize_resource
+  before_action :set_order
+  before_action :check_stock, only: %w[edit update]
 
   def edit
-  end
-
-  def create
-    @payment = Payment.new(payment_params)
-
-    if @payment.save
-      redirect_to @payment, notice: I18n.t('payments.create.success')
-    else
-      render :new
-    end
+    @payment = @order.payment
   end
 
   def update
-    if @payment.update(payment_params)
-      redirect_to @payment, notice: I18n.t('payments.update.success')
+    @payment = @order.payment
+    if @payment.update(payment_params.merge(payment_status: :completed, payment_date: Time.current))
+      update_product_stock
+      flash[:notice] = I18n.t('payments.create.success')
     else
-      render :edit
+      flash[:alert] = I18n.t('payments.create.failed')
     end
-  end
-
-  def destroy
-    @payment.destroy
-    redirect_to payments_url, notice: I18n.t('payments.destroy.success')
+    redirect_to order_path(@order)
   end
 
   private
 
-  def set_payment
-    @payment = Payment.find(params[:id])
+  def set_order
+    @order = Order.find(params[:order_id])
   end
 
   def payment_params
-    params.require(:payment).permit(:order_id, :payment_method, :payment_status, :payment_date)
+    params.require(:payment).permit(:payment_method)
+  end
+
+  def check_stock
+    items = @order.order_items
+    items.each do |item|
+      next unless item.product.stock_quantity < item.quantity
+
+      flash[:alert] = I18n.t('product.stock.out')
+      redirect_to order_path(@order)
+    end
+  end
+
+  def update_product_stock
+    items = @order.order_items
+    items.each do |item|
+      item.product.update(stock_quantity: (item.product.stock_quantity - item.quantity))
+    end
   end
 end

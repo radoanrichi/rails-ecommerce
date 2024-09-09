@@ -2,7 +2,6 @@
   <% if order.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
-
       <ul>
         <% order.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -10,38 +9,15 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :order_date %>
-    <%= form.date_field :order_date %>
-  </div>
-
-  <div class="field">
-    <%= form.label :total_amount %>
-    <%= form.number_field :total_amount, step: 0.01 %>
-  </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.number_field :user_id %>
-  </div>
-
   <div class="field">
     <%= form.label :status %>
     <%= form.select :status, Order.statuses.keys.map { |status| [status.humanize, status] } %>
   </div>
-
-  <div class="field">
-    <%= form.label :shipping_address %>
-    <%= form.text_area :shipping_address %>
-  </div>
-
   <div class="field">
     <%= form.label :shipping_status %>
     <%= form.select :shipping_status, Order.shipping_statuses.keys.map { |status| [status.humanize, status] } %>
   </div>
-
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Update Order' %>
   </div>
 <% end %>

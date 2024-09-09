@@ -1,0 +1,11 @@
+<h1>Edit Cart Item</h1>
+<%= form_with(model: @cart_item, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :quantity %>
+    <%= form.number_field :quantity, min: 1, value: @cart_item.quantity %>
+  </div>
+  <div class="actions">
+    <%= form.submit 'Update Quantity', class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', user_cart_path(@cart_item.cart.user), class: 'btn btn-secondary' %>
+  </div>
+<% end %>
