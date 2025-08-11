@@ -1,0 +1,29 @@
+<h1>Order Details</h1>
+
+<p>
+  <strong>Order Date:</strong>
+  <%= @order.order_date %>
+</p>
+
+<p>
+  <strong>Total Amount:</strong>
+  <%= @order.total_amount %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @order.status %>
+</p>
+
+<p>
+  <strong>Shipping Address:</strong>
+  <%= @order.shipping_address %>
+</p>
+
+<p>
+  <strong>Shipping Status:</strong>
+  <%= @order.shipping_status %>
+</p>
+
+<%= link_to 'Edit', edit_order_path(@order) %> |
+<%= link_to 'Back', orders_path %>

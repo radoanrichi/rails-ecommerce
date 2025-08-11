@@ -1,31 +1,69 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+    carts:
+        create:
+            success: "Cart was successfully created."
+        update:
+            success: "Cart was successfully updated."
+        destroy:
+            success: "Cart was successfully destroyed."
+en:
+  cart_items:
+    create:
+      success: "Item was successfully added to the cart."
+      user_not_found: "User not found."
+    update:
+      success: "Cart item was successfully updated."
+    destroy:
+      success: "Cart item was successfully removed."
+en:
+  categories:
+    create:
+      success: "Category was successfully created."
+    update:
+      success: "Category was successfully updated."
+    destroy:
+      success: "Category was successfully destroyed."
+en:
+  order_items:
+    create:
+      success: "Order item was successfully created."
+    update:
+      success: "Order item was successfully updated."
+    destroy:
+      success: "Order item was successfully destroyed."
+en:
+  orders:
+    create:
+      success: "Order was successfully created."
+    update:
+      success: "Order was successfully updated."
+    destroy:
+      success: "Order was successfully destroyed."
+en:
+  payments:
+    create:
+      success: "Payment was successfully created."
+    update:
+      success: "Payment was successfully updated."
+    destroy:
+      success: "Payment was successfully destroyed."
+en:
+  products:
+    create:
+      success: "Product was successfully created."
+    update:
+      success: "Product was successfully updated."
+    destroy:
+      success: "Product was successfully destroyed."
+en:
+  reviews:
+    create:
+      success: "Review was successfully created."
+en:
+  users:
+    create:
+      success: "User was successfully created."
+    update:
+      success: "User was successfully updated."
+    destroy:
+      success: "User was successfully destroyed."

@@ -1,0 +1,45 @@
+<h1><%= @product.name %></h1>
+<p><%= @product.description %></p>
+<p><strong>Price:</strong> <%= number_to_currency(@product.price) %></p>
+<p><strong>Stock quantity:</strong> <%= @product.stock_quantity %></p>
+<p><strong>SKU:</strong> <%= @product.SKU %></p>
+
+<% if @product.images.attached? %>
+  <h3>Images:</h3>
+  <% @product.images.each do |image| %>
+    <%= image_tag url_for(image), alt: "Product Image" %>
+  <% end %>
+<% end %>
+
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Back', products_path %>
+
+<h2>Reviews</h2>
+<%= link_to 'Write a Review', new_product_review_path(@product) %>
+<ul>
+  <% @product.reviews.each do |review| %>
+    <li>
+      <%= link_to "Review by #{review.user.name}", review_path(review) %> - Rating: <%= review.rating %> <br>
+      <%= review.comment %>
+    </li>
+  <% end %>
+</ul>
+
+<h2>Add to Cart</h2>
+<%= form_with(model: CartItem.new, url: cart_items_path, method: :post) do |form| %>
+  <div>
+    <%= label_tag :user_id, "User ID" %>
+    <%= text_field_tag :user_id %>
+  </div>
+  
+  <%= form.hidden_field :product_id, value: @product.id %>
+  
+  <div>
+    <%= form.label :quantity, "Quantity" %>
+    <%= form.number_field :quantity, value: 1, min: 1 %>
+  </div>
+
+  <div>
+    <%= form.submit "Add to Cart" %>
+  </div>
+<% end %>

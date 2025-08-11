@@ -1,0 +1,22 @@
+<p>
+  <strong>Order:</strong>
+  <%= @payment.order_id %>
+</p>
+
+<p>
+  <strong>Payment Method:</strong>
+  <%= @payment.payment_method %>
+</p>
+
+<p>
+  <strong>Payment Status:</strong>
+  <%= @payment.payment_status %>
+</p>
+
+<p>
+  <strong>Payment Date:</strong>
+  <%= @payment.payment_date %>
+</p>
+
+<%= link_to 'Edit', edit_payment_path(@payment) %> |
+<%= link_to 'Back', payments_path %>

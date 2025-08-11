@@ -15,10 +15,15 @@ class User < ApplicationRecord
   validates :phone, presence: true, phony_plausible: true
 
   before_save :normalize_phone_number
+  after_create :create_cart
 
   private
 
   def normalize_phone_number
     self.phone = PhonyRails.normalize_number(phone, default_country_code: 'BD')
+  end
+
+  def create_cart
+    Cart.create(user: self) # Create a cart for the newly created user
   end
 end

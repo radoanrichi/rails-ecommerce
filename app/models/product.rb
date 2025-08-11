@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   has_one :cart_item, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_one :order_item
+  has_many_attached :images
 
   has_one_attached :image
 
