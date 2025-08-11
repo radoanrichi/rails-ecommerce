@@ -1,41 +1,51 @@
 <h1>Your Cart</h1>
+<% if user_signed_in? && @cart.cart_items.any? %>
+  <div class="alert alert-warning" role="alert">
+    Inactive carts will be cleared after 7 days. Place the order to secure your favorite items!
+    <a href="#" id="learn-more-link">Learn more</a>
+  </div>
+<% end %>
 <% if @cart.cart_items.any? %>
   <table class="table">
     <thead>
       <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Total</th>
-        <th>Actions</th>
+        <th class="text-center">Product</th>
+        <th class="text-center">Quantity</th>
+        <th class="text-center">Price</th>
+        <th class="text-center">Total</th>
+        <th class="text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
       <% @cart.cart_items.each do |item| %>
         <tr>
-          <td><%= item.product.name %></td>
-          <td><%= item.quantity %></td>
-          <td><%= number_to_currency(item.product.price) %></td>
-          <td><%= number_to_currency(item.product.price * item.quantity) %></td>
-          <td>
-            <%= link_to 'Edit', edit_cart_cart_item_path(@cart, item), class: 'btn btn-sm btn-warning' %>
-            <%= button_to 'Remove', cart_cart_item_path(@cart, item), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+          <td class="text-center"><%= item.product.name %></td>
+          <td class="text-center"><%= item.quantity %></td>
+          <td class="text-center"><%= number_to_currency(item.product.price, unit: "", format: "%n BDT") %></td>
+          <td class="text-center"><%= number_to_currency(item.product.price * item.quantity, unit: "", format: "%n BDT") %></td>
+          <td class="text-center">
+            <div style="display: flex; gap: 10px; justify-content: center;">
+              <%= link_to 'Edit', edit_cart_cart_item_path(@cart, item), class: 'btn btn-sm btn-warning' %>
+              <%= button_to 'Remove', cart_cart_item_path(@cart, item), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+            </div>
           </td>
         </tr>
       <% end %>
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="3"><strong>Total:</strong></td>
-        <td><strong><%= number_to_currency(@cart.cart_items.sum { |item| item.product.price * item.quantity }) %></strong></td>
+        <td colspan="3" class="text-right"><strong>Total:</strong></td>
+        <td class="text-center"><strong><%= number_to_currency(@cart.cart_items.sum { |item| item.product.price * item.quantity }, unit: "", format: "%n BDT") %></strong></td>
         <td></td>
       </tr>
     </tfoot>
   </table>
-  <%= link_to 'Continue Shopping', products_path, class: 'btn btn-secondary' %>
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Checkout
-  </button>
+  <div class="d-flex justify-content-between mt-4">
+    <%= link_to 'Continue Shopping', products_path, class: 'btn btn-secondary' %>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Checkout
+    </button>
+  </div>
 <% else %>
   <p>Your cart is empty.</p>
   <%= link_to 'Continue Shopping', products_path, class: 'btn btn-secondary' %>
@@ -48,7 +58,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Do You like to place the order?
+        Do you want to place the order?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -57,3 +67,14 @@
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const learnMoreLink = document.getElementById('learn-more-link');
+    if (learnMoreLink) {
+      learnMoreLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        alert('If you haven\'t added any new items for 7 days, your cart will be cleared. Thank you for your understanding.');
+      });
+    }
+  });
+</script>

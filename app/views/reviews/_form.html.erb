@@ -1,13 +1,13 @@
-<%= form_with(model: [@product, @review]) do |form| %>
-  <div>
-    <%= form.label :rating %>
-    <%= form.number_field :rating, min: 1, max: 5 %>
+<%= form_with(model: [@product, @review], local: true) do |form| %>
+  <div class="mb-3">
+    <%= form.label :rating, class: 'form-label' %>
+    <%= form.number_field :rating, min: 1, max: 5, class: 'form-control' %>
+  </div>
+  <div class="mb-3">
+    <%= form.label :comment, class: 'form-label' %>
+    <%= form.text_area :comment, rows: 4, class: 'form-control' %>
   </div>
   <div>
-    <%= form.label :comment %>
-    <%= form.text_area :comment %>
-  </div>
-  <div>
-    <%= form.submit %>
+    <%= form.submit 'Submit', class: 'btn btn-primary' %>
   </div>
 <% end %>

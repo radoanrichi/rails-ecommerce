@@ -1,37 +1,46 @@
-<h1>Order Details</h1>
-<p>Order Date: <%= @order.order_date %></p>
-<p>Order Status: <%= @order.status %></p>
-<p>Total Amount: <%= number_to_currency(@order.total_amount) %></p>
-<p>Shipping Address: <%= @order.shipping_address %></p>
-<p>Shipping Status: <%= @order.shipping_status %></p>
-<p>Payment Status: <%= @order.payment.payment_status.titleize %></p>
-<% if @order.payment.nil? || @order.payment.payment_status == 'pending' %>
-  <%= button_to 'Make Payment', edit_order_payment_path(@order), method: :get, class: 'btn btn-primary' %>
-<% else %>
-  <p>Payment Method: <%= @order.payment.payment_method.humanize %></p>
-<% end %>
-<h2>Order Items</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Product</th>
-      <th>Quantity</th>
-      <th>Price</th>
-      <th>Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @order.order_items.each do |item| %>
+<h1 class="mb-4">Order Details</h1>
+<div class="container">
+  <div class="card mb-4">
+    <div class="card-header">
+      <h4 class="card-title">Order Information</h4>
+    </div>
+    <div class="card-body">
+      <p><strong>Order Date:</strong> <%= @order.order_date %></p>
+      <p><strong>Order Status:</strong> <%= @order.status.humanize %></p>
+      <p><strong>Total Amount:</strong> <%= number_to_currency(@order.total_amount, unit: "", format: "%n BDT") %></p>
+      <p><strong>Shipping Address:</strong> <%= @order.shipping_address %></p>
+      <p><strong>Shipping Status:</strong> <%= @order.shipping_status.humanize %></p>
+      <p><strong>Payment Status:</strong> <%= @order.payment.nil? ? 'Not Paid' : @order.payment.payment_status.titleize %></p>
+      <% if @order.payment.nil? || @order.payment.payment_status == 'pending' %>
+        <div class="d-flex mb-3">
+          <%= button_to 'Make Payment', edit_order_payment_path(@order), method: :get, class: 'btn btn-primary me-2' %>
+          <%= button_to 'Delete Order', order_path(@order), method: :delete, data: { confirm: 'Are you sure you want to delete this order?' }, class: 'btn btn-danger' %>
+        </div>
+      <% else %>
+        <p><strong>Payment Method:</strong> <%= @order.payment.payment_method.humanize %></p>
+      <% end %>
+    </div>
+  </div>
+  <h2 class="mb-4">Order Items</h2>
+  <table class="table table-striped">
+    <thead class="thead-dark">
       <tr>
-        <td><%= item.product.name %></td>
-        <td><%= item.quantity %></td>
-        <td><%= number_to_currency(item.price) %></td>
-        <td><%= number_to_currency(item.price * item.quantity) %></td>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-<p>
-  <%= link_to 'View Confirmation Email', email_preview_order_path(@order) %>
-</p>
-<%= link_to 'Back to Orders', user_orders_path(@order.user) %>
+    </thead>
+    <tbody>
+      <% @order.order_items.each do |item| %>
+        <tr>
+          <td><%= item.product.name %></td>
+          <td><%= item.quantity %></td>
+          <td><%= number_to_currency(item.price, unit: "", format: "%n BDT") %></td>
+          <td><%= number_to_currency(item.price * item.quantity, unit: "", format: "%n BDT") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= link_to 'Back to Orders', user_orders_path(@order.user), class: 'btn btn-secondary' %>
+</div>

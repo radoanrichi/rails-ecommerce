@@ -1,39 +1,19 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>WellShopping</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
-  <body>
-    <header>
-      <h1>Welcome to WellShopping</h1>
-      <nav>
-        <ul>
-          <li><%= link_to 'Categories', categories_path %></li>
-          <li><%= link_to 'Products', products_path %></li>
-          <% if user_signed_in? %>
-            <li><%= link_to 'Cart', user_cart_path(current_user) %></li>
-            <li><%= link_to 'Orders', user_orders_path(current_user) %></li>
-            <% if current_user.admin? %>
-              <li><%= link_to 'Admin Dashboard', user_dashboard_path %></li>
-            <% end %>
-          <% else %>
-            <% if session[:cart_id] %>
-              <li><%= link_to 'Cart', cart_path(session[:cart_id]) %></li>
-            <% end %>
-          <% end %>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <!-- Main content of the homepage -->
-      <p>Enjoy shopping!</p>
-    </main>
-    <footer>
-      <p>&copy; <%= Time.current.year %> WellShopping. All rights reserved.</p>
-    </footer>
-  </body>
-</html>
+<div class="jumbotron text-center">
+  <h1 class="display-4">Welcome to WellShopping</h1>
+  <p class="lead">Find everything you need right here.</p>
+  <hr class="my-4">
+</div>
+<div class="row">
+  <% if @products.empty? %>
+    <h5>No products found</h5>
+  <% else %>
+    <% @products.each do |product| %>
+      <div class="col-md-4 mb-4">
+        <%= render partial: 'products/product_card', locals: { product: product } %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+<div class="pagination-container d-flex justify-content-center mt-4">
+  <%== pagy_bootstrap_nav(@pagy) %>
+</div>

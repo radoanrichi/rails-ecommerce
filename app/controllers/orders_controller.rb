@@ -18,7 +18,6 @@ class OrdersController < ApplicationController
   end
 
   def update
-    authorize! :update, @order
     if @order.update(order_params)
       redirect_to order_path(@order), notice: I18n.t('orders.update.success')
     else
@@ -27,9 +26,12 @@ class OrdersController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, @order
-    @order.destroy
-    redirect_to orders_path, notice: I18n.t('orders.destroy.success')
+    if @order.payment.nil? || @order.payment.payment_status == 'pending'
+      @order.destroy
+      redirect_to orders_path, notice: I18n.t('orders.destroy.success')
+    else
+      redirect_to order_path(@order), alert: 'Order cannot be deleted after payment has been made.'
+    end
   end
 
   private

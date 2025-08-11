@@ -1,9 +1,12 @@
 <%= form_with(model: [@order, @payment], local: true) do |form| %>
-  <div class="field">
-    <%= form.label :payment_method %>
-    <%= form.select :payment_method, Payment.payment_methods.keys.map { |w| [w.humanize, w] } %>
+  <div class="mb-3">
+    <h4>Total Amount: <%= number_to_currency(@order.total_amount, unit: "", format: "%n BDT") %></h4>
   </div>
-  <div class="actions">
-    <%= form.submit %>
+  <div class="mb-3">
+    <%= form.label :payment_method, 'Choose Payment Method', class: 'form-label' %>
+    <%= form.select :payment_method, Payment.payment_methods.keys.map { |w| [w.humanize, w] }, {}, class: 'form-select' %>
+  </div>
+  <div class="mb-3">
+    <%= form.submit 'Submit Payment', class: 'btn btn-primary' %>
   </div>
 <% end %>

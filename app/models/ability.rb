@@ -9,6 +9,7 @@ class Ability
       can :read, :all
       can :email_preview, Order
       cannot :index, User
+      can :destroy, Order
     end
   end
 end
