@@ -11,3 +11,18 @@ Buffered obosthay kemne thakbe, deadlock hoite pare, oita kemne solve korbo?
 
 
 Updated uniqueness: true to uniqueness: { scope: :order_id }: Ensures that each product can only appear once per order, but can appear in different orders.
+
+
+radoan.sharkar@wellshopping.com
+admin@admin
+
+admin@wellshopping.com
+admin@admin
+
+Kaium Uddin
+
+kaium.uddin@gmail.com
+
+Sydney, London, Canada
+
+admin@admin

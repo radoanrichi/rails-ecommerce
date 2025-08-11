@@ -18,17 +18,17 @@ class CheckoutService
       { success: true, order: }
     end
   rescue StandardError => e
-    { success: false, error: I18n.t('checkout.order_creation_failed', error_message: e.message) }
+    { success: false, error: I18n.t('carts.checkout.order_creation_failed', error_message: e.message) }
   end
 
   private
 
   def cart_empty?
-    @cart.item_count.zero? || @cart.item_count.nil?
+    @cart.cart_items.count.zero? || @cart.cart_items.count.nil?
   end
 
   def empty_cart_error
-    { success: false, error: I18n.t('checkout.empty_cart_error') }
+    { success: false, error: I18n.t('carts.checkout.empty_cart_error') }
   end
 
   def create_order
@@ -60,6 +60,6 @@ class CheckoutService
       payment_date: Time.current
     )
   rescue StandardError => e
-    raise I18n.t('checkout.payment_creation_failed', error_message: e.message)
+    raise I18n.t('carts.checkout.payment_creation_failed', error_message: e.message)
   end
 end

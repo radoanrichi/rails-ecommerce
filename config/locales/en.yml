@@ -19,9 +19,12 @@ en:
             success: "Cart was successfully deleted."
             error: "There was an error deleting the cart. Please try again."
         checkout:
-            success: "Checkout completed successfully. Thank you for your purchase!"
+            success: "Checkout completed successfully. Please proceed to payment for confirming your order."
             failed: "Checkout failed: %{error}. Please try again."
             sign_in_required: "Please sign in to proceed with the checkout."
+            order_creation_failed: "Order creation failed: %{error_message}"
+            empty_cart_error: "Your cart is empty. Please add items before checking out."
+            payment_creation_failed: "Payment creation failed: %{error_message}"
         merge:
             success: "Items from your browser session have been added to your cart."
 
@@ -66,7 +69,7 @@ en:
         update:
             success: "Payment details were successfully updated."
             failed: "There was an error updating the payment details. Please try again."
-
+        already_completed: "Payment has already been completed. No further updates are allowed."
     product:
         stock:
             out: "Insufficient stock for product %{product_name}. Please reduce the quantity or select another product."
@@ -109,10 +112,17 @@ en:
 
     order_mailer:
         order_confirmation:
-            subject: "Order Confirmation - Order ID: %{order_id}"
-            heading: "Your Order is Confirmed!"
-            message: "Thank you for shopping with us. Your order with ID %{order_id} has been confirmed."
-            thanks: "We appreciate your business and hope you enjoy your purchase!"
+            subject: "Order Confirmation - Order #%{order_id}"
+            greeting: "Hello %{name},"
+            body: "Thank you for your order! Your order number is %{order_id}."
+            thank_you: "We appreciate your business."
+            view_order: "To view your order details, click the link below:"
+            order_link: "View Order"
+            footer: "If you have any questions, please contact us at support@wellshopping.io."
+            cancelled_intro: "We regret to inform you that your order has been cancelled."
+            cancelled_body: "Order ID: %{order_id} has been cancelled due to unforeseen circumstances."
+            refund_info: "A refund will be processed shortly. You should see the funds returned to your original payment method soon."
+            contact_info: "An admin from our team will contact you to provide further assistance."
 
     activerecord:
         errors:

@@ -1,46 +1,107 @@
-<h1 class="mb-4">Order Details</h1>
-<div class="container">
-  <div class="card mb-4">
-    <div class="card-header">
-      <h4 class="card-title">Order Information</h4>
-    </div>
-    <div class="card-body">
-      <p><strong>Order Date:</strong> <%= @order.order_date %></p>
-      <p><strong>Order Status:</strong> <%= @order.status.humanize %></p>
-      <p><strong>Total Amount:</strong> <%= number_to_currency(@order.total_amount, unit: "", format: "%n BDT") %></p>
-      <p><strong>Shipping Address:</strong> <%= @order.shipping_address %></p>
-      <p><strong>Shipping Status:</strong> <%= @order.shipping_status.humanize %></p>
-      <p><strong>Payment Status:</strong> <%= @order.payment.nil? ? 'Not Paid' : @order.payment.payment_status.titleize %></p>
-      <% if @order.payment.nil? || @order.payment.payment_status == 'pending' %>
-        <div class="d-flex mb-3">
-          <%= button_to 'Make Payment', edit_order_payment_path(@order), method: :get, class: 'btn btn-primary me-2' %>
-          <%= button_to 'Delete Order', order_path(@order), method: :delete, data: { confirm: 'Are you sure you want to delete this order?' }, class: 'btn btn-danger' %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Order Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      .badge-status {
+        font-size: 0.875rem;
+        padding: 0.5em 0.75em;
+        border-radius: 0.25rem;
+      }
+      .badge-pending {
+        background-color: #ffc107;
+        color: #212529;
+      }
+      .badge-completed {
+        background-color: #28a745;
+        color: #fff;
+      }
+      .badge-cancelled {
+        background-color: #dc3545;
+        color: #fff;
+      }
+      .badge-shipping {
+        background-color: #007bff;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="mb-4" style="color: #343a40;">Order Details</h1>
+    <div class="container">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4 class="card-title">Order Information</h4>
         </div>
-      <% else %>
-        <p><strong>Payment Method:</strong> <%= @order.payment.payment_method.humanize %></p>
-      <% end %>
+        <div class="card-body">
+          <p><strong>Order Date:</strong> <%= @order.order_date %></p>
+          <p><strong>Order Status:</strong>
+            <span class="badge badge-status 
+            <% if @order.status == 'pending' %> badge-pending 
+            <% elsif @order.status == 'completed' %> badge-completed 
+            <% elsif @order.status == 'cancelled' %> badge-cancelled 
+            <% end %>">
+              <%= @order.status.humanize %>
+            </span>
+          </p>
+          <p><strong>Total Amount:</strong> <%= number_to_currency(@order.total_amount, unit: "", format: "%n BDT") %></p>
+          <p><strong>Shipping Address:</strong> <%= @order.shipping_address %></p>
+          <p><strong>Shipping Status:</strong>
+            <span class="badge badge-status 
+            <% if @order.shipping_status == 'not_shipped' %> badge-shipping 
+            <% elsif @order.shipping_status == 'in_transit' %> badge-pending 
+            <% elsif @order.shipping_status == 'delivered' %> badge-completed 
+            <% end %>">
+              <%= @order.shipping_status.humanize %>
+            </span>
+          </p>
+          <p><strong>Payment Status:</strong>
+            <span class="badge badge-status 
+            <% if @order.payment.nil? %> badge-pending 
+            <% elsif @order.payment.payment_status == 'pending' %> badge-pending 
+            <% elsif @order.payment.payment_status == 'completed' %> badge-completed 
+            <% end %>">
+              <%= @order.payment.nil? ? 'Not Paid' : @order.payment.payment_status.titleize %>
+            </span>
+          </p>
+          <% if @order.payment && @order.payment.payment_status == 'completed' %>
+            <p><strong>Payment Method:</strong> <%= @order.payment.payment_method.humanize %></p>
+          <% end %>
+          <div class="d-flex mb-3">
+            <% if !current_user.admin? && (@order.payment.nil? || @order.payment.payment_status == 'pending') %>
+              <%= button_to 'Make Payment', edit_order_payment_path(@order), method: :get, class: 'btn btn-primary me-2' %>
+            <% end %>
+            <% if current_user.admin? %>
+              <%= button_to 'Update Order', edit_order_path(@order), method: :get, class: 'btn btn-warning me-2' %>
+            <% end %>
+            <%= button_to 'Delete Order', order_path(@order), method: :delete, data: { confirm: 'Are you sure you want to delete this order?' }, class: 'btn btn-danger' %>
+          </div>
+        </div>
+      </div>
+      <h2 class="mb-4" style="color: #343a40;">Order Items</h2>
+      <table class="table table-striped">
+        <thead class="thead-dark" style="background-color: #343a40; color: white;">
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @order.order_items.each do |item| %>
+            <tr>
+              <td><%= item.product.name %></td>
+              <td><%= item.quantity %></td>
+              <td><%= number_to_currency(item.price, unit: "", format: "%n BDT") %></td>
+              <td><%= number_to_currency(item.price * item.quantity, unit: "", format: "%n BDT") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= link_to 'Back to Orders', user_orders_path(@order.user), class: 'btn btn-secondary' %>
     </div>
-  </div>
-  <h2 class="mb-4">Order Items</h2>
-  <table class="table table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @order.order_items.each do |item| %>
-        <tr>
-          <td><%= item.product.name %></td>
-          <td><%= item.quantity %></td>
-          <td><%= number_to_currency(item.price, unit: "", format: "%n BDT") %></td>
-          <td><%= number_to_currency(item.price * item.quantity, unit: "", format: "%n BDT") %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <%= link_to 'Back to Orders', user_orders_path(@order.user), class: 'btn btn-secondary' %>
-</div>
+  </body>
+</html>

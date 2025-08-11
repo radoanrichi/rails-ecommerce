@@ -1,3 +1,21 @@
-<h1><%= I18n.t('order_mailer.order_confirmation.heading') %></h1>
-<p><%= I18n.t('order_mailer.order_confirmation.message', order_id: @order.id) %></p>
-<p><%= I18n.t('order_mailer.order_confirmation.thanks') %></p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <title><%= I18n.t('order_mailer.order_confirmation.subject', order_id: @order.id) %></title>
+  </head>
+  <body>
+    <h1><%= I18n.t('order_mailer.order_confirmation.greeting', name: @order&.user&.name) %></h1>
+    <% if @order.cancelled? %>
+      <p><%= I18n.t('order_mailer.order_confirmation.cancelled_intro') %></p>
+      <p><%= I18n.t('order_mailer.order_confirmation.cancelled_body', order_id: @order.id) %></p>
+      <p><%= I18n.t('order_mailer.order_confirmation.refund_info') %></p>
+      <p><%= I18n.t('order_mailer.order_confirmation.contact_info') %></p>
+    <% elsif @order.confirmed? %>
+      <p><%= I18n.t('order_mailer.order_confirmation.body', order_id: @order.id) %></p>
+      <p><%= I18n.t('order_mailer.order_confirmation.thank_you') %></p>
+      <p><%= I18n.t('order_mailer.order_confirmation.view_order') %>: <a href="<%= @url %>/orders/<%= @order.id %>"><%= I18n.t('order_mailer.order_confirmation.order_link') %></a></p>
+      <p><%= I18n.t('order_mailer.order_confirmation.footer') %></p>
+    <% end %>
+  </body>
+</html>

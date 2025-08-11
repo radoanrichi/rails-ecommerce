@@ -18,6 +18,7 @@ class User < ApplicationRecord
   before_save :normalize_phone_number
   after_create :create_cart
   after_create :create_order
+  after_create :schedule_welcome_email
 
   private
 
@@ -31,5 +32,9 @@ class User < ApplicationRecord
 
   def create_order
     Order.create(user: self)
+  end
+
+  def schedule_welcome_email
+    SendSignupEmailJob.set(wait: 2.seconds).perform_async(id)
   end
 end

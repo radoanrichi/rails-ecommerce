@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
+  before_action :set_order, only: %i[show update destroy]
   load_and_authorize_resource
-  before_action :set_order, only: %i[show email_preview update destroy]
 
   def index
     @orders = if current_user.admin?
@@ -13,13 +13,10 @@ class OrdersController < ApplicationController
   def show
   end
 
-  def email_preview
-    @email_content = OrderMailer.order_confirmation(@order).body.raw_source.html_safe
-  end
-
   def update
     if @order.update(order_params)
-      redirect_to order_path(@order), notice: I18n.t('orders.update.success')
+      send_order_mail
+      redirect_to @order, notice: I18n.t('orders.update.success')
     else
       render :edit
     end
@@ -48,5 +45,11 @@ class OrdersController < ApplicationController
 
   def order_params
     params.require(:order).permit(:status, :shipping_status)
+  end
+
+  def send_order_mail
+    return unless @order.confirmed? || @order.cancelled?
+
+    SendOrderConfirmationEmailJob.perform_async(@order.id)
   end
 end

@@ -62,4 +62,11 @@ Rails.application.routes.draw do
   resources :products do
     get 'delete_image/:image_id', to: 'products#delete_image', as: :delete_image
   end
+
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
+
+  require 'sidekiq/web'
+
+  # Mount Sidekiq's web interface at /sidekiq
+  mount Sidekiq::Web => '/sidekiq' if Rails.env.development? || Rails.env.production?
 end

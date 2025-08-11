@@ -31,17 +31,15 @@ class CartsController < ApplicationController
         merge_carts(current_user.cart, Cart.find(session[:cart_id]))
         session.delete(:cart_id)
       end
-
       result = CheckoutService.new(current_user, current_user.cart).call
-
       if result[:success]
-        redirect_to order_path(result[:order]), notice: I18n.t('checkout.success')
+        redirect_to order_path(result[:order]), notice: I18n.t('carts.checkout.success')
       else
-        redirect_to user_cart_path(current_user), alert: I18n.t('checkout.failed', error: result[:error])
+        redirect_to user_cart_path(current_user), alert: I18n.t('carts.checkout.failed', error: result[:error])
       end
     else
       session[:checkout_redirect] = request.path
-      redirect_to new_user_session_path, alert: I18n.t('checkout.sign_in_required')
+      redirect_to new_user_session_path, alert: I18n.t('carts.checkout.sign_in_required')
     end
   end
 

@@ -7,8 +7,9 @@ class Ability
       cannot :edit, Review
     else
       can :read, :all
-      can :email_preview, Order
       cannot :index, User
+      can :update, Payment, user_id: user.id
+      can :manage, Review
       can :destroy, Order
     end
   end

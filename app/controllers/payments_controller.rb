@@ -2,6 +2,7 @@ class PaymentsController < ApplicationController
   load_and_authorize_resource
   before_action :set_order
   before_action :check_stock, only: %w[edit update]
+  before_action :prevent_repayment_if_completed, only: %w[update]
 
   def edit
     @payment = @order.payment
@@ -10,6 +11,7 @@ class PaymentsController < ApplicationController
   def update
     @payment = @order.payment
     if @payment.update(payment_params.merge(payment_status: :completed, payment_date: Time.current))
+      PaymentMailer.payment_confirmation(@order).deliver_now
       update_product_stock
       flash[:notice] = I18n.t('payments.create.success')
     else
@@ -34,7 +36,7 @@ class PaymentsController < ApplicationController
       next unless item.product.stock_quantity < item.quantity
 
       flash[:alert] = I18n.t('product.stock.out')
-      redirect_to order_path(@order)
+      redirect_to order_path(@order) and return
     end
   end
 
@@ -43,5 +45,12 @@ class PaymentsController < ApplicationController
     items.each do |item|
       item.product.update(stock_quantity: (item.product.stock_quantity - item.quantity))
     end
+  end
+
+  def prevent_repayment_if_completed
+    return unless @order.payment&.completed?
+
+    flash[:alert] = I18n.t('payments.already_completed')
+    redirect_to order_path(@order) and return
   end
 end

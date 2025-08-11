@@ -52,6 +52,7 @@ class ProductsController < ApplicationController
   private
 
   def set_product
+    params[:id] = params[:product_id] if params[:product_id].present?
     @product = Product.find(params[:id])
   end
 
@@ -61,9 +62,9 @@ class ProductsController < ApplicationController
 
   def search
     @pagy, @products = if params[:q].present?
-                         pagy(Product.where('name ILIKE ?', "%#{params[:q]}%"))
+                         pagy(Product.where('name ILIKE ?', "%#{params[:q]}%").order(id: :asc))
                        else
-                         pagy(Product.all)
+                         pagy(Product.order(id: :asc))
                        end
   end
 end
