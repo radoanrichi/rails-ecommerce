@@ -1,0 +1,13 @@
+This line `if: -> { new_record? || !password.nil? }` in User Model means - 
+
+Explanation:
+new_record?: This is a method provided by ActiveRecord that returns true if the object hasn't been saved to the database yet. In this context, it ensures that when creating a new user, the password must be present and valid.
+
+!password.nil?: This checks if the password attribute is not nil. It's used here to ensure that when updating an existing user, the password validation only runs if a password has been provided (i.e., the user is attempting to change their password).
+
+Confusion - 
+Cart e kono item add korle ki main stock theke item count reduce hobe? naki order complete korle reduce hobe? 
+Buffered obosthay kemne thakbe, deadlock hoite pare, oita kemne solve korbo?
+
+
+Updated uniqueness: true to uniqueness: { scope: :order_id }: Ensures that each product can only appear once per order, but can appear in different orders.
