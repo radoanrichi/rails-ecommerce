@@ -1,36 +1,8 @@
-<%= form_with(model: @payment, local: true) do |form| %>
-  <% if @payment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@payment.errors.count, "error") %> prohibited this payment from being saved:</h2>
-
-      <ul>
-        <% @payment.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :order_id %>
-    <%= form.number_field :order_id %>
-  </div>
-
+<%= form_with(model: [@order, @payment], local: true) do |form| %>
   <div class="field">
     <%= form.label :payment_method %>
     <%= form.select :payment_method, Payment.payment_methods.keys.map { |w| [w.humanize, w] } %>
   </div>
-
-  <div class="field">
-    <%= form.label :payment_status %>
-    <%= form.select :payment_status, Payment.payment_statuses.keys.map { |w| [w.humanize, w] } %>
-  </div>
-
-  <div class="field">
-    <%= form.label :payment_date %>
-    <%= form.date_select :payment_date %>
-  </div>
-
   <div class="actions">
     <%= form.submit %>
   </div>

@@ -1,32 +1,13 @@
 class OrderItemsController < ApplicationController
-  before_action :set_order_item, only: %i[show edit update destroy]
-
-  def index
-    @order_items = OrderItem.all
-  end
-
-  def show
-  end
-
-  def new
-    @order_item = OrderItem.new
-  end
-
-  def create
-    @order_item = OrderItem.new(order_item_params)
-    if @order_item.save
-      redirect_to @order_item, notice: I18n.t('order_items.create.success')
-    else
-      render :new
-    end
-  end
+  load_and_authorize_resource
+  before_action :set_order_item, only: %i[edit update destroy]
 
   def edit
   end
 
   def update
     if @order_item.update(order_item_params)
-      redirect_to @order_item, notice: I18n.t('order_items.update.success')
+      redirect_to order_path(@order_item.order), notice: I18n.t('order_items.update.success')
     else
       render :edit
     end
@@ -34,7 +15,7 @@ class OrderItemsController < ApplicationController
 
   def destroy
     @order_item.destroy
-    redirect_to order_items_url, notice: I18n.t('order_items.destroy.success')
+    redirect_to order_path(@order_item.order), notice: I18n.t('order_items.destroy.success')
   end
 
   private
@@ -44,6 +25,6 @@ class OrderItemsController < ApplicationController
   end
 
   def order_item_params
-    params.require(:order_item).permit(:order_id, :product_id, :quantity, :price)
+    params.require(:order_item).permit(:product_id, :quantity, :price)
   end
 end

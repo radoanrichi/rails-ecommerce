@@ -1,69 +1,120 @@
 en:
+    cart_items:
+        create:
+            success: "Item added to cart successfully."
+            insufficient_stock: "Sorry, there is not enough stock available."
+            error: "There was an error adding the item to your cart. Please try again."
+        update:
+            success: "Cart item updated successfully."
+            error: "There was an error updating the cart item. Please try again."
+        destroy:
+            success: "Cart item removed successfully."
+            error: "There was an error removing the cart item. Please try again."
+
     carts:
         create:
             success: "Cart was successfully created."
-        update:
-            success: "Cart was successfully updated."
+            error: "There was an error creating the cart. Please try again."
         destroy:
-            success: "Cart was successfully destroyed."
-en:
-  cart_items:
-    create:
-      success: "Item was successfully added to the cart."
-      user_not_found: "User not found."
-    update:
-      success: "Cart item was successfully updated."
-    destroy:
-      success: "Cart item was successfully removed."
-en:
-  categories:
-    create:
-      success: "Category was successfully created."
-    update:
-      success: "Category was successfully updated."
-    destroy:
-      success: "Category was successfully destroyed."
-en:
-  order_items:
-    create:
-      success: "Order item was successfully created."
-    update:
-      success: "Order item was successfully updated."
-    destroy:
-      success: "Order item was successfully destroyed."
-en:
-  orders:
-    create:
-      success: "Order was successfully created."
-    update:
-      success: "Order was successfully updated."
-    destroy:
-      success: "Order was successfully destroyed."
-en:
-  payments:
-    create:
-      success: "Payment was successfully created."
-    update:
-      success: "Payment was successfully updated."
-    destroy:
-      success: "Payment was successfully destroyed."
-en:
-  products:
-    create:
-      success: "Product was successfully created."
-    update:
-      success: "Product was successfully updated."
-    destroy:
-      success: "Product was successfully destroyed."
-en:
-  reviews:
-    create:
-      success: "Review was successfully created."
-en:
-  users:
-    create:
-      success: "User was successfully created."
-    update:
-      success: "User was successfully updated."
-    destroy:
-      success: "User was successfully destroyed."
+            success: "Cart was successfully deleted."
+            error: "There was an error deleting the cart. Please try again."
+        checkout:
+            success: "Checkout completed successfully. Thank you for your purchase!"
+            failed: "Checkout failed: %{error}. Please try again."
+            sign_in_required: "Please sign in to proceed with the checkout."
+        merge:
+            success: "Items from your browser session have been added to your cart."
+
+    categories:
+        create:
+            success: "Category was successfully created."
+            error: "There was an error creating the category. Please try again."
+        update:
+            success: "Category was successfully updated."
+            error: "There was an error updating the category. Please try again."
+        destroy:
+            success: "Category was successfully deleted."
+            error: "There was an error deleting the category. Please try again."
+
+    order_items:
+        update:
+            success: "Order item was successfully updated."
+            error: "There was an error updating the order item. Please try again."
+        destroy:
+            success: "Order item was successfully deleted."
+            error: "There was an error deleting the order item. Please try again."
+
+    orders:
+        index:
+            no_orders: "No orders found."
+        show:
+            not_found: "The order you are looking for could not be found."
+        update:
+            success: "Order was successfully updated."
+            error: "There was an error updating the order. Please try again."
+        destroy:
+            success: "Order was successfully deleted."
+            error: "There was an error deleting the order. Please try again."
+        email_preview:
+            success: "Email preview loaded successfully."
+            error: "There was an error loading the email preview. Please try again."
+
+    payments:
+        create:
+            success: "Payment was successfully processed."
+            failed: "There was an error processing the payment. Please try again."
+        update:
+            success: "Payment details were successfully updated."
+            failed: "There was an error updating the payment details. Please try again."
+
+    product:
+        stock:
+            out: "Insufficient stock for product %{product_name}. Please reduce the quantity or select another product."
+
+    products:
+        create:
+            success: "Product was successfully created."
+            failed: "There was an error creating the product. Please try again."
+        update:
+            success: "Product was successfully updated."
+            failed: "There was an error updating the product. Please try again."
+        destroy:
+            success: "Product was successfully deleted."
+            failed: "There was an error deleting the product. Please try again."
+        images:
+            delete_success: "Image was successfully deleted."
+            delete_failed: "There was an error deleting the image. Please try again."
+        search:
+            no_results: "No products found matching your search criteria."
+
+    reviews:
+        create:
+            success: "Review was successfully created."
+            failed: "There was an error creating the review. Please try again."
+        update:
+            success: "Review was successfully updated."
+            failed: "There was an error updating the review. Please try again."
+        destroy:
+            success: "Review was successfully deleted."
+            failed: "There was an error deleting the review. Please try again."
+
+    users:
+        update:
+            success: "Profile updated successfully."
+            failed: "There was an error updating the profile. Please try again."
+        destroy:
+            success: "User was successfully deleted."
+            failed: "There was an error deleting the user. Please try again."
+        access_denied: "Access denied."
+
+    order_mailer:
+        order_confirmation:
+            subject: "Order Confirmation - Order ID: %{order_id}"
+            heading: "Your Order is Confirmed!"
+            message: "Thank you for shopping with us. Your order with ID %{order_id} has been confirmed."
+            thanks: "We appreciate your business and hope you enjoy your purchase!"
+
+    activerecord:
+        errors:
+            messages:
+                invalid_sku_format: "only allows uppercase letters and numbers"

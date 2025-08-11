@@ -1,11 +1,12 @@
 class User < ApplicationRecord
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
   has_many :orders, dependent: :destroy
   has_one :cart, dependent: :destroy
   has_many :reviews, dependent: :destroy
 
   enum role: %i[admin user].freeze
-
-  has_secure_password
 
   EMAIL_REGEX = /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
 
@@ -16,6 +17,7 @@ class User < ApplicationRecord
 
   before_save :normalize_phone_number
   after_create :create_cart
+  after_create :create_order
 
   private
 
@@ -24,6 +26,10 @@ class User < ApplicationRecord
   end
 
   def create_cart
-    Cart.create(user: self) # Create a cart for the newly created user
+    Cart.create(user: self)
+  end
+
+  def create_order
+    Order.create(user: self)
   end
 end

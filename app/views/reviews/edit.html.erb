@@ -1,3 +1,5 @@
 <h1>Edit Review</h1>
-<%= render 'form' %>
-<%= link_to 'Back', review_path(@review) %>
+
+<%= render 'form', review: @review %>
+
+<%= link_to 'Back', @product %>

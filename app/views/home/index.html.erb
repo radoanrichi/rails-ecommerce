@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WellShopping</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to WellShopping</h1>
+      <nav>
+        <ul>
+          <li><%= link_to 'Categories', categories_path %></li>
+          <li><%= link_to 'Products', products_path %></li>
+          <% if user_signed_in? %>
+            <li><%= link_to 'Cart', user_cart_path(current_user) %></li>
+            <li><%= link_to 'Orders', user_orders_path(current_user) %></li>
+            <% if current_user.admin? %>
+              <li><%= link_to 'Admin Dashboard', user_dashboard_path %></li>
+            <% end %>
+          <% else %>
+            <% if session[:cart_id] %>
+              <li><%= link_to 'Cart', cart_path(session[:cart_id]) %></li>
+            <% end %>
+          <% end %>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <!-- Main content of the homepage -->
+      <p>Enjoy shopping!</p>
+    </main>
+    <footer>
+      <p>&copy; <%= Time.current.year %> WellShopping. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

@@ -1,49 +1,50 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: %i[show edit update destroy]
+  load_and_authorize_resource
+  before_action :set_order, only: %i[show email_preview update destroy]
 
   def index
-    @orders = Order.all
+    @orders = if current_user.admin?
+                Order.includes(:user).all
+              else
+                current_user.orders.includes(:order_items)
+              end
   end
 
   def show
   end
 
-  def new
-    @order = Order.new
-  end
-
-  def create
-    @order = Order.new(order_params)
-    if @order.save
-      redirect_to @order, notice: I18n.t('orders.create.success')
-    else
-      render :new
-    end
-  end
-
-  def edit
+  def email_preview
+    @email_content = OrderMailer.order_confirmation(@order).body.raw_source.html_safe
   end
 
   def update
+    authorize! :update, @order
     if @order.update(order_params)
-      redirect_to @order, notice: I18n.t('orders.update.success')
+      redirect_to order_path(@order), notice: I18n.t('orders.update.success')
     else
       render :edit
     end
   end
 
   def destroy
+    authorize! :destroy, @order
     @order.destroy
-    redirect_to orders_url, notice: I18n.t('orders.destroy.success')
+    redirect_to orders_path, notice: I18n.t('orders.destroy.success')
   end
 
   private
 
   def set_order
-    @order = Order.find(params[:id])
+    @order = if current_user.admin?
+               Order.find(params[:id])
+             else
+               current_user.orders.find(params[:id])
+             end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to orders_path, alert: I18n.t('orders.show.not_found')
   end
 
   def order_params
-    params.require(:order).permit(:order_date, :total_amount, :user_id, :status, :shipping_address, :shipping_status)
+    params.require(:order).permit(:status, :shipping_status)
   end
 end

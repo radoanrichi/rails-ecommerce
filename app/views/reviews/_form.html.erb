@@ -1,31 +1,13 @@
-<%= form_with(model: [@product, @review], local: true) do |form| %>
-  <% if @review.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
-      <ul>
-        <% @review.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
+<%= form_with(model: [@product, @review]) do |form| %>
+  <div>
     <%= form.label :rating %>
-    <%= form.number_field :rating %>
+    <%= form.number_field :rating, min: 1, max: 5 %>
   </div>
-
-  <div class="field">
+  <div>
     <%= form.label :comment %>
     <%= form.text_area :comment %>
   </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.number_field :user_id %>
-  </div>
-
-  <div class="actions">
+  <div>
     <%= form.submit %>
   </div>
 <% end %>
